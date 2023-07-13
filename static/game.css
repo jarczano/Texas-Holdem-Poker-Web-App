@@ -1,0 +1,264 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    background-image: url("../static/image/background_game.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+#poker-table {
+    width: 70%;
+    height: 70vh;
+    margin: 0 auto;
+    background-image: url("../static/image/poker_table.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: red;
+    max-width: 2000px;
+    display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.common_card_container{
+    margin-top: 10%;
+    width: 60%;
+    height: 30%;
+    background-color: aqua;
+    display: flex;
+    justify-content: space-between;
+    /*align-items: center;*/
+
+
+}
+
+.common_card{
+    max-width: 20%; /* Ustalamy maksymalną szerokość na 100%, aby zdjęcia zmniejszały się proporcjonalnie */
+    max-height: 100%; /* Ustalamy maksymalną wysokość na 100%, aby zdjęcia zmniejszały się proporcjonalnie */
+    object-fit: contain;
+    opacity: 0;
+}
+
+
+/*player card  -------------------------------------------------------------*/
+.player_stuff_container{
+    background-color: coral;
+    position: absolute;
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Ustawia dwie równe kolumny */
+    grid-gap: 10px; /* Dodatkowy odstęp między kolumnami */
+    width: 40vh;
+    height: 20vh;
+    bottom: 10%;
+}
+
+
+#player_card_container{
+    background-color: blue;
+    height: 100%;
+   display: flex;
+
+}
+
+.player_card{
+    max-height: 100%;
+    max-width: 50%;
+    object-fit: contain;
+    width: 50%;
+    box-sizing: border-box;
+}
+
+#player_card1{
+    margin-right: 10px;
+}
+
+#player_info_container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 2px solid #cacad1;
+    background: linear-gradient(to right, #252629, #201e2c);
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+    height: 40%;
+    color: white;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.playner_name{
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.player_stack{
+    font-style: italic;
+}
+
+
+
+/*oppoent card  -------------------------------------------------------------*/
+.opponent_stuff_container{
+    background-color: coral;
+    position: absolute;
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Ustawia dwie równe kolumny */
+    grid-gap: 10px; /* Dodatkowy odstęp między kolumnami */
+    width: 40vh;
+    height: 20vh;
+    top: 10%;
+}
+
+
+#opponent_card_container{
+    background-color: blue;
+    height: 100%;
+   display: flex;
+
+}
+
+.opponent_card{
+    max-height: 100%;
+    max-width: 50%;
+    object-fit: contain;
+    width: 50%;
+    box-sizing: border-box;
+}
+
+#opponent_card1{
+    margin-right: 10px;
+}
+
+#opponent_info_container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 2px solid #cacad1;
+    background: linear-gradient(to right, #252629, #201e2c);
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+    height: 40%;
+    color: white;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.opponent_name{
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.opponent_stack{
+    font-style: italic;
+}
+
+
+
+/* bet ---------------------------------*/
+.player_bet{
+    font-size: 40px;
+    position: absolute;
+    bottom: 30%;
+    display:none;
+}
+
+.opponent_bet{
+    font-size: 40px;
+    position: absolute;
+    top: 30%;
+    display:none;
+}
+
+.pot{
+    font-size: 40px;
+    position: absolute;
+    top: 35%;
+
+}
+
+
+
+/* action---------------------*/
+
+
+#action_container{
+    position: absolute;
+    left: 2%;
+    width: 15vw;
+    background-color: #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 50%;
+}
+
+
+#raise_container{
+    display: flex;
+    flex-direction: column;
+}
+
+.button {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 26px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: none;
+
+  }
+
+#button_Fold, #button_All-in{
+    display: flex;
+}
+
+
+
+  #slider_raise {
+    width: 90%;
+  }
+
+
+  #opponent_decision{
+    font-size: 46px;
+    position: absolute;
+    top: 10%;
+    right: 30%;
+    display: none;
+
+  }
+
+  #game_info{
+    font-size: 46px;
+    position: absolute;
+    bottom: 30%;
+    right: 5%;
+  }
