@@ -3,9 +3,10 @@ from poker_round import poker_round
 from split_pot import change_players_positions
 from flask_socketio import emit
 
+
 def game(opponent):
-    p1 = Player('Alice', 100, 'human')
-    p2 = Player('Bob', 100, opponent)
+    Player('Alice', 100, 'human')
+    Player('Bob', 100, opponent)
 
     player_list_chair = Player.player_list_chair
     print("number players ", len(player_list_chair))
