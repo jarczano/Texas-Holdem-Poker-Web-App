@@ -262,3 +262,25 @@ body {
     bottom: 30%;
     right: 5%;
   }
+
+
+  /* Message container------------------------------------------------------------------------------*/
+  /* Style for the message container */
+.message-container {
+    background-color: black;
+    position: absolute;
+    right: 10px;
+
+    width: 15vw;
+    height: 40vh;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+/* Style for individual messages */
+.message {
+    color: white;
+    padding: 5px;
+    margin-bottom: 5px;
+
+}

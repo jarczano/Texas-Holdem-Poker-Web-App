@@ -3,15 +3,16 @@ class Player(object):
     # will be change after each round, order of player_list_chair are steal this same
     player_list = []
     player_list_chair = []
-    _position = 0
+    #_position = 0
 
-    def __init__(self, name, stack, kind='human'):
-        self.__class__.player_list.append(self)
-        self.__class__.player_list_chair.append(self)
+    def __init__(self, name, stack, position, kind='human'):
+        #self.__class__.player_list.append(self)
+        #self.__class__.player_list_chair.append(self)
         self.name = name
         self.kind = kind  # human or AI
         self.stack = stack
-        self.position = Player._position
+        #self.position = Player._position
+        self.position = position
         self.live = True
         self.alin = False
         self.cards = ''
@@ -24,7 +25,7 @@ class Player(object):
         self.action_used = None
         self.reward = 0
 
-        Player._position += 1
+        #Player._position += 1
 
     def allin(self):
         # player will not be asked in the auction

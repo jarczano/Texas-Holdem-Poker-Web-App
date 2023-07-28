@@ -9,7 +9,7 @@ from setting import BB, SB, show_game, time_pause_round_end
 from flask_socketio import emit
 
 
-def poker_round():
+def poker_round(player_id):
 
     player_list_chair = Player.player_list_chair
     player_list = Player.player_list
@@ -27,14 +27,17 @@ def poker_round():
         player_list[-2].blind(player_list[-2].stack)
         player_list[-2].allin()
 
+    #join_room(player_id)
     # send info about blind to the client
     for player in player_list_chair:
-        emit('update_bet', [player.name, player.input_stack])
-        emit('update_stack', [player.name, player.stack])
+
+        #socketio.emit('update_bet', [player.name, player.input_stack])
+        emit('update_bet', [player.name, player.input_stack], room=player_id)
+        emit('update_stack', [player.name, player.stack], room=player_id)
 
     # send info about pot
     pot = sum([player.input_stack for player in player_list])
-    emit('update_pot', [pot])
+    emit('update_pot', [pot], room=player_id)
 
     if show_game:
         print(player_list[-1].name, 'BB')
@@ -51,9 +54,9 @@ def poker_round():
         [deck.remove(player.cards[i]) for i in range(2)]
         # send player card to the client
         if player.kind == 'human':
-            emit('deal_player_cards', player.cards)
+            emit('deal_player_cards', player.cards, room=player_id)
         else:
-            emit('deal_opponent_cards')
+            emit('deal_opponent_cards', room=player_id)
 
     if show_game:
         for player in player_list:
@@ -69,11 +72,11 @@ def poker_round():
         if show_game:
             print("Preflop")
 
-        auction()
+        yield from auction(player_id)
 
         # reset bet auction
         for player in player_list:
-            emit('update_bet', [player.name, 0])
+            emit('update_bet', [player.name, 0], room=player_id)
 
 
         #for player in player_list:
@@ -94,20 +97,20 @@ def poker_round():
     # If there is only one player left in the game, he wins
     if number_live_players + number_allin_players == 1:
 
-        one_player_win()
+        one_player_win(player_id)
         # end of round
         time.sleep(time_pause_round_end)
         # hide opponent decision
-        emit('hide_opponent_decision')
+        emit('hide_opponent_decision', room=player_id)
     else:
         # Flop
-        emit('hide_opponent_decision')
+        emit('hide_opponent_decision', room=player_id)
         flop = random.sample(deck, 3)
         [deck.remove(flop[i]) for i in range(3)]
         common_cards = flop
 
         # send flop cards to client
-        emit('deal_flop_cards', common_cards)
+        emit('deal_flop_cards', common_cards, room=player_id)
 
         if show_game:
             print("Flop cards: {}".format(flop))
@@ -118,11 +121,11 @@ def poker_round():
         if number_live_players > 1:
 
             # Second auction
-            auction(common_cards)
+            yield from auction(player_id, common_cards)
 
             # reset auction bet
             for player in player_list:
-                emit('update_bet', [player.name, 0])
+                emit('update_bet', [player.name, 0], room=player_id)
 
 
         # Check how many players are in the game and all-in
@@ -132,24 +135,24 @@ def poker_round():
         # If there is only one player left in the game, he wins
         if number_live_players + number_allin_players == 1:
 
-            one_player_win()
+            one_player_win(player_id)
 
             # end of round
             time.sleep(time_pause_round_end)
             # hide opponent decision
-            emit('hide_opponent_decision')
+            emit('hide_opponent_decision', room=player_id)
             # Return to the original position
             change_players_positions(shift_decision)
         else:
 
-            emit('hide_opponent_decision')
+            emit('hide_opponent_decision', room=player_id)
             # Deal the cards to the turn
             turn = random.sample(deck, 1)
             deck.remove(turn[0])
             common_cards = flop + turn
 
             # send turn card to client
-            emit('deal_turn_card', turn)
+            emit('deal_turn_card', turn, room=player_id)
 
             if show_game:
                 print("Turn cards: {}".format(common_cards))
@@ -157,11 +160,11 @@ def poker_round():
 
             if number_live_players > 1:
                 # Third auction
-                auction(common_cards)
+                yield from auction(player_id, common_cards)
 
                 # reset auction bet
                 for player in player_list:
-                    emit('update_bet', [player.name, 0])
+                    emit('update_bet', [player.name, 0], room=player_id)
 
 
 
@@ -171,33 +174,33 @@ def poker_round():
 
             # If there is only one player left in the game, he wins
             if number_live_players + number_allin_players == 1:
-                one_player_win()
+                one_player_win(player_id)
                 
                 # end of round
                 time.sleep(time_pause_round_end)
                 # hide opponent decision
-                emit('hide_opponent_decision')
+                emit('hide_opponent_decision', room=player_id)
                 change_players_positions(shift_decision)
             else:
-                emit('hide_opponent_decision')
+                emit('hide_opponent_decision', room=player_id)
                 # Deal the cards to the river
                 river = random.sample(deck, 1)
                 deck.remove(river[0])
                 common_cards += river
 
                 # send river card to client
-                emit('deal_river_card', river)
+                emit('deal_river_card', river, room=player_id)
 
                 if show_game:
                     print("River cards: {}".format(common_cards))
 
                 if number_live_players > 1:
                     # Last auction
-                    auction(common_cards)
+                    yield from auction(player_id, common_cards)
 
                         # reset auction bet
                     for player in player_list:
-                        emit('update_bet', [player.name, 0])
+                        emit('update_bet', [player.name, 0], room=player_id)
 
 
                 # Check how many players are in the game and all-in
@@ -208,25 +211,25 @@ def poker_round():
                 if number_live_players + number_allin_players == 1:
 
                     # Return to the original position
-                    one_player_win()
+                    one_player_win(player_id)
 
                     # end of round
                     time.sleep(time_pause_round_end)
                      # hide opponent decision
-                    emit('hide_opponent_decision')
+                    emit('hide_opponent_decision', room=player_id)
                     change_players_positions(shift_decision)
                 else:
 
                     # Send message to show down client
                     for player in player_list:
                         if player.kind != 'human':
-                            emit('show_down', player.cards)
+                            emit('show_down', player.cards, room=player_id)
 
                     # Calculate score players
                     players_score(player_list_chair, common_cards)
 
                     # Split pot
-                    split_pot()
+                    split_pot(player_id)
 
                     # end of round
                     time.sleep(time_pause_round_end)

@@ -11,6 +11,9 @@ SB = 25
 show_game = True
 time_pause_round_end = 8
 
+games = {}
+
+
 
 
 

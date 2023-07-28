@@ -4,7 +4,7 @@ var show_end_round = false;
 const time_to_show_end_round = 7000;
 const time_delay_hide_action_container = 1;
 // Send start game to the serever
-socket.emit('start_game', 'AI');
+socket.emit('start_game');
 
 const common_card1 = document.getElementById('common_card1');
 const common_card2 = document.getElementById('common_card2');
@@ -39,8 +39,11 @@ const slider_raise = document.getElementById('slider_raise');
 
 const action_container = document.getElementById('action_container');
 
-/**/
 const raiseValue = document.getElementById('raiseValue');
+
+const name_opponent = sessionStorage.getItem('name_opponent');
+
+
 
 slider_raise.addEventListener('input', () => {
     console.log("sliver val",slider_raise.value);
@@ -59,12 +62,11 @@ socket.on('connect', function () {
 
 
 
+
 // Player card
 socket.on('deal_player_cards', function(deal_player_cards){
   console.log('Received response deal_player_card');
   var [text_player_card1, text_player_card2] = deal_player_cards;
-
-
 
   player_card1.src = '../static/image/' + text_player_card1 + '.png';
   player_card2.src = '../static/image/'+ text_player_card2 + '.png';
@@ -88,6 +90,7 @@ socket.on('deal_opponent_cards', function(deal_opponent_cards){
 
 // Flop
 socket.on('deal_flop_cards', function(deal_flop_cards){
+
   console.log('Received response deal_flop_cards');
   var [text_flop_card1, text_flop_card2, text_flop_card3] = deal_flop_cards;
 
@@ -97,6 +100,8 @@ socket.on('deal_flop_cards', function(deal_flop_cards){
   common_card1.style.opacity = 1;
   common_card2.style.opacity = 1;
   common_card3.style.opacity = 1;
+
+  addMessage('Flop cards: ' + text_flop_card1 + ', ' + text_flop_card2 + ', ' + text_flop_card3)
 });
 
 
@@ -106,6 +111,8 @@ socket.on('deal_turn_card', function(deal_turn_card){
   var [text_turn_card1] = deal_turn_card;
   common_card4.src = '../static/image/' + text_turn_card1 + ".png";
   common_card4.style.opacity = 1;
+
+  addMessage('Turn card: ' + text_turn_card1)
 });
 
 // River
@@ -114,6 +121,8 @@ socket.on('deal_river_card', function(deal_river_card){
   var [text_river_card1] = deal_river_card;
   common_card5.src = '../static/image/' + text_river_card1 + ".png";
   common_card5.style.opacity = 1;
+
+  addMessage('River card: ' + text_river_card1)
 });
 
 // Opponent decision
@@ -125,10 +134,13 @@ socket.on('opponent_decision', function(opponent_dec){
   // tutaj jeszcze jakies animacje pewnie i jako funckje to odpalic
   if (text_decision == 'Raise'){
     text = text_decision + " " + String(raise_value) + " $"
+
   }
    else{text = text_decision}
   opponent_decision.innerText = text;
   opponent_decision.style.display = 'flex';
+
+  addMessage(name_opponent + ' ' + text)
 });
 
 
@@ -179,9 +191,11 @@ socket.on('player_option', function(player_option){
 
 // update bet value
 socket.on('update_bet', function(update_bet){
+    console.log('Update bet');
   var [player_name, new_player_bet] = update_bet;
   if (player_name == "Alice"){
     if (new_player_bet != 0){
+        addMessage('Alice bet ' + new_player_bet + " $")
         player_bet.textContent = new_player_bet + " $";
         player_bet.style.display='flex'
     }
@@ -190,6 +204,8 @@ socket.on('update_bet', function(update_bet){
   }
   else{
     if (new_player_bet != 0){
+
+        addMessage(name_opponent + ' bet ' + new_player_bet + " $")
         opponent_bet.textContent = new_player_bet + " $";
         opponent_bet.style.display='flex';
     }
@@ -246,6 +262,7 @@ socket.on('finish_round_one_player', function(finish_round_one_player){
   game_info.innerText = winner_name + " win " + pot_win;
   game_info.style.display = 'flex';
 
+  addMessage(winner_name + " win " + pot_win);
    setTimeout(function(){
     game_info.style.display = 'none';
     clean_table();
@@ -289,6 +306,9 @@ socket.on('finish_round_split_pot', function(finish_round_split_pot){
   game_info.innerText = name_player1 + ' with ' + hand_player1 + ' win ' + pot_win_player1 + '\n' + name_player2 + ' with ' + hand_player2 + ' win ' + pot_win_player2;
   game_info.style.display = 'flex';
 
+  addMessage(name_player1 + ' with ' + hand_player1 + ' win ' + pot_win_player1);
+  addMessage(name_player2 + ' with ' + hand_player2 + ' win ' + pot_win_player2);
+
    setTimeout(function(){
     game_info.style.display = 'none';
     clean_table();
@@ -315,9 +335,14 @@ socket.on('show_down', function(show_down){
 // Finish game
 socket.on('finish_game', function(finish_game){
   console.log('Received response finish_game');
-  var [winner_name] = finish_game;
+  var [looser_name] = finish_game;
+  if (looser_name == 'Alice'){
+    winner_name = name_opponent
+  }
+  else{ winner_name = 'Alice'}
   game_info.style.display = 'flex';
   game_info.innerText = winner_name + ' win game';
+
 });
 
 function hide_action_container(){
@@ -363,6 +388,20 @@ button_Raise.addEventListener('click', function(){
 socket.on('redirect', function(data) {
     window.location.href = data.url;
 });
+
+
+// Message container ---------------------------------------------------------
+function addMessage(message) {
+    const messageContainer = document.getElementById('messageContainer');
+    const messageElement = document.createElement('div');
+    messageElement.className = 'message';
+    messageElement.textContent = message;
+    messageContainer.appendChild(messageElement);
+
+    // Scroll to the bottom to show the latest message
+    messageContainer.scrollTop = messageContainer.scrollHeight;
+}
+
 
 
 

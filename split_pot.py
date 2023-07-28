@@ -6,7 +6,7 @@ from flask_socketio import emit
 import operator
 
 
-def split_pot():
+def split_pot(player_id):
 
     # The split_pot function takes one parameter: list of object players.
     # Function changing attribute stack this object and returns how much they win.
@@ -84,11 +84,11 @@ def split_pot():
         #print(player_list[i].name, player_list[i].stack, player_list[i].input_stack)
 
     # send info about win
-    emit('finish_round_split_pot', emit_content)
+    emit('finish_round_split_pot', emit_content, room=player_id)
 
 
 
-def one_player_win():
+def one_player_win(player_id):
 
     #  Function changing player stack who win, and return list tuple who win and how much
 
@@ -101,7 +101,7 @@ def one_player_win():
             list_winner.append((player, win_value - player.input_stack))
 
             # send info about reward to the client
-            emit('finish_round_one_player', [player.name, win_value])
+            emit('finish_round_one_player', [player.name, win_value], room=player_id)
 
             if show_game:
                 print("{} win {}".format(player.name,  win_value - player.input_stack))

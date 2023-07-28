@@ -11,7 +11,7 @@ from flask_socketio import emit
 from flask import request
 from setting import socketio, games
 
-
+#response_decision = None
 
 
 def auction(player_id, common_cards=None):
@@ -86,10 +86,26 @@ def auction(player_id, common_cards=None):
                     else:
                         emit('player_option', [dict_options['check'], emit_call_value, False, False], room=player_id)
 
-                    decision = yield 'wait_for_player_decision'
+                    # wait for player action
+                    #global response_decision
+
+                    # musze miec id
+                    #player_id = request.sid
+
+                    #response_decision = setting.players_response[player_id]
+                    response_decision = None
+                    while response_decision is None:
+                        socketio.sleep(0.2)
+                        #response_decision = setting.players_response[player_id]
+                        #print("sleep")
+                    #print("weak up")
 
 
+                    decision = response_decision  # response powinno wygladac tak ['call', 0]
                     print('decision from client', decision)
+
+                    setting.players_response[player_id] = None
+                    #response_decision = None
 
 
 

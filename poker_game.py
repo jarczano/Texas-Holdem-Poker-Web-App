@@ -1,14 +1,24 @@
+import time
+
 from player_class import Player
 from poker_round import poker_round
 from split_pot import change_players_positions
 from flask_socketio import emit
+from setting import time_pause_round_end
 
+def game(opponent, player_id):
+    print('game start')
+    print('opponent', opponent)
+    print('player id ', player_id)
 
-def game(opponent):
-    Player('Alice', 100, 'human')
-    Player('Bob', 100, opponent)
+    player1 = Player('Alice', 100, 0, 'human')
+    player2 = Player('Bob', 100, 1, opponent)
+
+    Player.player_list = [player1, player2]
+    Player.player_list_chair = [player1, player2]
 
     player_list_chair = Player.player_list_chair
+
     print("number players ", len(player_list_chair))
 
     end = False
@@ -16,7 +26,7 @@ def game(opponent):
 
         # Play a round
 
-        poker_round()
+        yield from poker_round(player_id)
 
         # Shift the button to the next player
         change_players_positions(shift=1)
@@ -28,13 +38,8 @@ def game(opponent):
         for player in player_list_chair:
             if player.stack == 0:
                 end = True
-            else:
-                emit('finish_game', [player.name])
+                # now it send name of loser
+                emit('finish_game', [player.name], room=player_id)
+                time.sleep(time_pause_round_end)
+                yield 'end'
 
-        # kill players
-        '''
-        if end:
-            for i in range(len(player_list_chair)):
-                del player_list_chair[len(player_list_chair) - i - 1]
-                # tutaj by trzeba wysłąc zakonczenie gry
-'''
