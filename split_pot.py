@@ -17,11 +17,13 @@ def split_pot(player_id):
     for player in player_list:
         if player.live is False and player.alin is False:
             # nagroda jezeli foldowach
+            ''' to jest chyba kawalek od uczenia DNN
             if player.kind == "deepAI":
                 #print("split pot action used1", player.action_used)
 
                 player.reward = -player.input_stack
                 #yield np.zeros(4) - 1, -player.input_stack, False, player.action_used
+            '''
             player_list.remove(player)
 
     # To calculate reword function needs sorted players list with a descending order and then ascending input stack

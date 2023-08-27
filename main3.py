@@ -17,8 +17,13 @@ def on_connect():
 
 @app.route('/')
 def menu():
-    return render_template('menu.html')
+    # return render_template('menu.html')
+    return render_template('start.html')
 
+# test
+@app.route('/menu.html')
+def tmenu():
+    return render_template('menu.html')
 
 @app.route('/play/')
 def render_game():

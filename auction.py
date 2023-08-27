@@ -12,8 +12,6 @@ from flask import request
 from setting import socketio, games
 
 
-
-
 def auction(player_id, common_cards=None):
     """
     Function made a auction: prepare available options for players, ask players about his decision
@@ -91,9 +89,7 @@ def auction(player_id, common_cards=None):
 
                     print('decision from client', decision)
 
-
-
-                elif player.kind == 'AI':
+                elif player.kind == 'bot': # jak tutaj powinny wygladac te nazwy zeby gdzies niezgodnosci nie bylo
                     # this function return choose of AI
                     n_fold = [gamer.live and gamer.alin for gamer in player_list].count(True)
                     n_player_in_round = number_player - n_fold
@@ -103,7 +99,7 @@ def auction(player_id, common_cards=None):
                     decision = bot.decision()
                     print('pkt', player.name, decision)
 
-                elif player.kind == 'deepAI':
+                elif player.kind == 'ai':
 
                     n_fold = [gamer.live and gamer.alin for gamer in player_list].count(True)
                     n_player_in_round = number_player - n_fold
@@ -183,6 +179,12 @@ def auction(player_id, common_cards=None):
                         else:
                             decision = ['all-in']
 
+                elif player.kind == 'gpt':
+                    # write code for gpt
+                    pass
+
+
+
 
                 # Processing of player decision
 
@@ -244,6 +246,17 @@ def auction(player_id, common_cards=None):
                     else:
                         emit('opponent_decision', [decision, 0], room=player_id)
 
+                if decision == 'raise':
+                    text_decision = 'raise ' + str(chips) + "$" # czy tutaj napenwo jest chips ?
+                elif decision == 'call':
+                    text_decision = 'call ' + str(chips) + "$"
+                elif decision == 'all-in':
+                    text_decision = 'all-in for ' + str(player.stack) + "$"
+                else:
+                    text_decision = decision
+
+                emit('message_decision', player.name + ' ' + text_decision)
+
 
             # check if the every except one player fold then don't ask him about decision
             sum_live = 0
@@ -263,17 +276,3 @@ def auction(player_id, common_cards=None):
         if player.live:
             player.decision = False
 
-'''
-@socketio.on('player_decision')
-def player_decision(player_decision):
-    request_player_id = request.sid
-    game = games.get(request_player_id)
-    if game.player_id == request_player_id:
-        global response_decision
-        response_decision = player_decision
-'''
-'''
-@socketio.on('player_decision')
-def player_decision(player_decision):
-        global response_decision
-        response_decision = player_decision'''

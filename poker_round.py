@@ -14,24 +14,38 @@ def poker_round(player_id):
     player_list_chair = Player.player_list_chair
     player_list = Player.player_list
 
+    emit('message_decision', 'New round', room=player_id)
+
     # Take blinds from players
     if player_list[-1].stack > BB:
         player_list[-1].blind(BB)
+
+        emit('message_decision', player_list[-1].name + ' big blind ' + str(BB) + "$", room=player_id)
     else:
         player_list[-1].blind(player_list[-1].stack)
         player_list[-1].allin()
 
+        emit('message_decision', player_list[-1].name + ' big blind ' + player_list[-1].input_stack + "$", room=player_id)
+        emit('message_decision', player_list[-1].name + ' short stack all-in ' + player_list[-1].input_stack, room=player_id)
+
     if player_list[-2].stack > SB:
         player_list[-2].blind(SB)
+
+        emit('message_decision', player_list[-2].name + ' small blind ' + str(SB) + "$", room=player_id)
     else:
         player_list[-2].blind(player_list[-2].stack)
         player_list[-2].allin()
+
+        emit('message_decision', player_list[-2].name + ' small blind ' + player_list[-2].input_stack + "$", room=player_id)
+        emit('message_decision', player_list[-2].name + ' short stack all-in ' + player_list[-2].input_stack, room=player_id)
+
 
     #join_room(player_id)
     # send info about blind to the client
     for player in player_list_chair:
 
         #socketio.emit('update_bet', [player.name, player.input_stack])
+
         emit('update_bet', [player.name, player.input_stack], room=player_id)
         emit('update_stack', [player.name, player.stack], room=player_id)
 

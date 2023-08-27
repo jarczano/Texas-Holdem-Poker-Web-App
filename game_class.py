@@ -5,7 +5,7 @@ from player_class import Player
 class Game:
     def __init__(self, player_id):
         self.player_id = player_id
-        self.opponent = 'AI' # bot, AI , GPT
+        self.opponent = 'bot' # bot, ai , gpt
         self.game_generator = None
         self.player_decision = None
         self.state = None # 'end' or 'wait_player_decision'

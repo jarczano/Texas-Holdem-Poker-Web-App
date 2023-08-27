@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, orientation=landscape">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+
 
 
     <title>Game menu</title>
@@ -15,20 +18,30 @@
 </head>
 <body>
     <div class="menu_container">
-
+        <!--
+        <button class="button" id="button_fullscreen">Full screen</button>
+-->
         <div class="button_container">
-            <button id="play_with_bot" class="button" onclick="selectOpponent('bot')">Logical AI</button>
-            <button id="play_with_ai" class="button" onclick="selectOpponent('ai')">Deep AI</button>
-            <button id="play_with_gpt" class="button" onclick="selectOpponent('gpt')">Open AI GPT3</button>
-            <button id="play" class="button" onclick="play()">Play</button>
+            <p class="choose_opponent_text">Select your opponent</p>
+            <button id="play_with_bot" class="button" onclick="selectOpponent('bot')">Bob</button>
+            <button id="play_with_ai" class="button" onclick="selectOpponent('ai')">Celia</button>
+            <button id="play_with_gpt" class="button" onclick="selectOpponent('gpt')">Dylan</button>
+            <button id="play" class="button-play" onclick="play()">Play</button>
         </div>
 
         <div class="opponent-info" id="opponentInfo">
             <img id="opponent-photo">
-
+            <p id="opponent-name"></p>
             <div id="opponent-description"></div>
         </div>
     </div>
+
+    <div id="rotateMessage" class="portrait-mode">
+        <video autoplay loop muted>
+            <source src="static/image/rotate.mp4" type="video/mp4">
+        </video>
+    </div>
+
 <script src="../static/menu.js"></script>
 </body>
 </html>

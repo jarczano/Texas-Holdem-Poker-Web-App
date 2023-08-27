@@ -136,11 +136,16 @@ socket.on('opponent_decision', function(opponent_dec){
     text = text_decision + " " + String(raise_value) + " $"
 
   }
-   else{text = text_decision}
+  else{text = text_decision}
   opponent_decision.innerText = text;
   opponent_decision.style.display = 'flex';
 
-  addMessage(name_opponent + ' ' + text)
+  // tutaj nie ma czym jest name_opponent
+  //addMessage(name_opponent + ' ' + text)
+});
+
+socket.on('message_decision', function(text_message){
+    addMessage(text_message);
 });
 
 
@@ -191,11 +196,11 @@ socket.on('player_option', function(player_option){
 
 // update bet value
 socket.on('update_bet', function(update_bet){
-    console.log('Update bet');
+    console.log('Update bet', update_bet);
   var [player_name, new_player_bet] = update_bet;
   if (player_name == "Alice"){
     if (new_player_bet != 0){
-        addMessage('Alice bet ' + new_player_bet + " $")
+        /*addMessage('Alice bet ' + new_player_bet + " $")*/
         player_bet.textContent = new_player_bet + " $";
         player_bet.style.display='flex'
     }
@@ -205,7 +210,7 @@ socket.on('update_bet', function(update_bet){
   else{
     if (new_player_bet != 0){
 
-        addMessage(name_opponent + ' bet ' + new_player_bet + " $")
+        /*addMessage(player_name + ' bet ' + new_player_bet + " $")*/
         opponent_bet.textContent = new_player_bet + " $";
         opponent_bet.style.display='flex';
     }
@@ -213,6 +218,8 @@ socket.on('update_bet', function(update_bet){
     }
   }
 );
+
+
 
 // update stack value
 socket.on('update_stack', function(update_stack){
@@ -306,8 +313,15 @@ socket.on('finish_round_split_pot', function(finish_round_split_pot){
   game_info.innerText = name_player1 + ' with ' + hand_player1 + ' win ' + pot_win_player1 + '\n' + name_player2 + ' with ' + hand_player2 + ' win ' + pot_win_player2;
   game_info.style.display = 'flex';
 
+  /*
   addMessage(name_player1 + ' with ' + hand_player1 + ' win ' + pot_win_player1);
   addMessage(name_player2 + ' with ' + hand_player2 + ' win ' + pot_win_player2);
+*/
+  addMessage(name_player1 + ' has ' + hand_player1 + ' win ' + pot_win_player1);
+  addMessage(name_player2 + ' has ' + hand_player2 + ' win ' + pot_win_player2);
+
+  addMessage(name_player1 + ' win ' + pot_win_player1);
+  addMessage(name_player2 + ' win ' + pot_win_player2);
 
    setTimeout(function(){
     game_info.style.display = 'none';
@@ -454,3 +468,18 @@ socket.on('update_stack', function(update_stack){
   opponent_stack.textContent = new_stack_opponent
 });
 */
+
+function toggleFullScreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else if (document.exitFullscreen) {
+    document.exitFullscreen();
+  }
+}
+
+
+
+const button_fullscreen = document.getElementById('button_fullscreen');
+button_fullscreen.addEventListener('click', function(){
+  toggleFullScreen();
+});

@@ -9,7 +9,7 @@ class Player(object):
         #self.__class__.player_list.append(self)
         #self.__class__.player_list_chair.append(self)
         self.name = name
-        self.kind = kind  # human or AI
+        self.kind = kind  # human for user, bot, ai , gpt TERAZ TRZEBA SPRAWDZIC CZY W CALYM KODZIE GRY TE NAZWY SA TAKIE SAME
         self.stack = stack
         #self.position = Player._position
         self.position = position
