@@ -38,6 +38,20 @@ def game(opponent, player_id):
         # Reset properties for each player
         [player.next_round() for player in player_list_chair]
 
+        for i in range(len(player_list_chair)):
+            if player_list_chair[i].stack == 0:
+
+                for player in player_list_chair:
+                    emit('update_stack', [player.name, player.stack], room=player_id)
+
+                winner_index = i ^ 1
+                winner_name = player_list_chair[winner_index].name
+                end = True
+                # now it send name of loser
+                emit('finish_game', winner_name + 'win the game', room=player_id)
+                time.sleep(time_pause_round_end)
+                yield 'end'
+        '''
         # Check if players has money
         for player in player_list_chair:
             if player.stack == 0:
@@ -46,4 +60,4 @@ def game(opponent, player_id):
                 emit('finish_game', [player.name], room=player_id)
                 time.sleep(time_pause_round_end)
                 yield 'end'
-
+        '''

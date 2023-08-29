@@ -17,11 +17,21 @@ function toggleFullScreen() {
 
 const button_fullscreen = document.getElementById('button_fullscreen');
 const menu_frame = document.getElementById('menu_frame');
+const play_container = document.getElementById('play-container')
+
+
+const button_fsc = document.getElementById('button_fsc');
+
+button_fsc.addEventListener('click', function(){
+  toggleFullScreen();
+  console.log("click");
+});
 
 button_fullscreen.addEventListener('click', function(){
   toggleFullScreen();
   console.log("click");
-  button_fullscreen.style.display = 'none';
+  /*button_fullscreen.style.display = 'none';*/
+  play_container.style.display = 'none';
   menu_frame.style.display = 'flex';
   /*lock('landscape')*/
 });

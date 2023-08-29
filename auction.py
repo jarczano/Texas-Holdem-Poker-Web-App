@@ -240,18 +240,21 @@ def auction(player_id, common_cards=None):
                 emit('update_stack', [player.name, player.stack], room=player_id)
                 emit('update_pot', [sum([player.input_stack for player in player_list])], room=player_id)
 
+
+                '''
                 if player.name != "Alice":
                     if decision == 'raise':
                         emit('opponent_decision', ['Raise', chips], room=player_id)
                     else:
                         emit('opponent_decision', [decision, 0], room=player_id)
+                '''
 
                 if decision == 'raise':
                     text_decision = 'raise ' + str(chips) + "$" # czy tutaj napenwo jest chips ?
                 elif decision == 'call':
                     text_decision = 'call ' + str(chips) + "$"
                 elif decision == 'all-in':
-                    text_decision = 'all-in for ' + str(player.stack) + "$"
+                    text_decision = 'all-in for ' + str(player.input_stack) + "$" # tutaj player.stack = 0 ,
                 else:
                     text_decision = decision
 

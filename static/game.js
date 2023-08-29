@@ -26,7 +26,7 @@ const player_bet = document.getElementById('player_bet');
 const opponent_bet = document.getElementById('opponent_bet');
 const pot = document.getElementById('pot');
 
-const opponent_decision = document.getElementById('opponent_decision');
+
 
 const button_call = document.getElementById('button_call');
 const button_check = document.getElementById('button_check');
@@ -46,10 +46,9 @@ const name_opponent = sessionStorage.getItem('name_opponent');
 
 
 slider_raise.addEventListener('input', () => {
-    console.log("sliver val",slider_raise.value);
+   // console.log("sliver val",slider_raise.value);
     button_Raise.textContent = "Raise " + String(slider_raise.value) + " $";
-    console.log("sliver val",slider_raise.value);
-
+    //console.log("sliver val",slider_raise.value);
 });
 
 
@@ -125,7 +124,12 @@ socket.on('deal_river_card', function(deal_river_card){
   addMessage('River card: ' + text_river_card1)
 });
 
+// Change my mind, opponent decision will be dispaly only in message container
 // Opponent decision
+/*
+
+const opponent_decision = document.getElementById('opponent_decision');
+
 socket.on('opponent_decision', function(opponent_dec){
   console.log('Received response opponent_decision');
   console.log(opponent_dec);
@@ -144,14 +148,22 @@ socket.on('opponent_decision', function(opponent_dec){
   //addMessage(name_opponent + ' ' + text)
 });
 
+
+// Hide opponent decision
+socket.on('hide_opponent_decision', function(){
+    opponent_decision.style.display = 'none';
+});
+
+*/
+
+
 socket.on('message_decision', function(text_message){
     addMessage(text_message);
 });
 
 
-// Hide opponent decision
-socket.on('hide_opponent_decision', function(){
-    opponent_decision.style.display = 'none';
+socket.on('finish_game', function(text_message){
+    addMessage(text_message, 'end game');
 });
 
 
@@ -159,7 +171,7 @@ socket.on('hide_opponent_decision', function(){
 // Player option
 socket.on('player_option', function(player_option){
   console.log('Received response player_option');
-  action_container.style.display = 'flex'
+  action_container.style.display = 'flex';
 
   var [option_check, option_call, option_raise_from, option_raise_to] = player_option;
   //[false/true     int/false  int/false    int/false]
@@ -170,12 +182,16 @@ socket.on('player_option', function(player_option){
   }
   else{button_check.style.display = "none";}
 
+    console.log('test response player_option', 1)
+
   if (String(option_call) != "false"){
     button_call.style.display = "flex";
     button_call.textContent = "Call " + option_call + " $";
   }
    else{button_call.style.display = "none";
    }
+
+console.log('test response player_option', 2)
 
   if (String(option_raise_from) != "false"){
     button_Raise.style.display = "flex"; // moze to tu nie jest potrzebme
@@ -188,8 +204,7 @@ socket.on('player_option', function(player_option){
     else{
     raise_container.style.display = "none";
     }
-
-
+   console.log('test response player_option', 3)
 });
 
 
@@ -262,6 +277,7 @@ function clean_table(){
 
 
 // Finish round -> one player win
+/*
 socket.on('finish_round_one_player', function(finish_round_one_player){
 
   console.log('Received response finish_round');
@@ -274,14 +290,22 @@ socket.on('finish_round_one_player', function(finish_round_one_player){
     game_info.style.display = 'none';
     clean_table();
   }, time_to_show_end_round);
-  /*
-  show_end_round = true;
-  setTimeout(function(){
-    show_end_round = false;
-    game_info.style.display = 'none'
-  }, time_to_show_end_round);*/
+});
+*/
+
+// Finish round -> one player win
+socket.on('finish_round_one_player', function(finish_round_one_player){
+
+  console.log('Received response finish_round');
+  var [winner_name, pot_win] = finish_round_one_player;
+  addMessage(winner_name + " win " + pot_win + "$");
+
+   setTimeout(function(){
+    clean_table();
+  }, time_to_show_end_round);
 
 });
+
 
 
 
@@ -306,6 +330,7 @@ socket.on('finish_round_split_pot', function(finish_round_split_pot){
 */
 
 // Finish round -> split pot
+/*
 socket.on('finish_round_split_pot', function(finish_round_split_pot){
   console.log('Received response finish_round');
 
@@ -313,22 +338,38 @@ socket.on('finish_round_split_pot', function(finish_round_split_pot){
   game_info.innerText = name_player1 + ' with ' + hand_player1 + ' win ' + pot_win_player1 + '\n' + name_player2 + ' with ' + hand_player2 + ' win ' + pot_win_player2;
   game_info.style.display = 'flex';
 
-  /*
+
   addMessage(name_player1 + ' with ' + hand_player1 + ' win ' + pot_win_player1);
   addMessage(name_player2 + ' with ' + hand_player2 + ' win ' + pot_win_player2);
-*/
-  addMessage(name_player1 + ' has ' + hand_player1 + ' win ' + pot_win_player1);
-  addMessage(name_player2 + ' has ' + hand_player2 + ' win ' + pot_win_player2);
-
-  addMessage(name_player1 + ' win ' + pot_win_player1);
-  addMessage(name_player2 + ' win ' + pot_win_player2);
 
    setTimeout(function(){
     game_info.style.display = 'none';
     clean_table();
   }, time_to_show_end_round);
+});
+*/
+
+socket.on('finish_round_split_pot', function(finish_round_split_pot){
+  console.log('Received response finish_round');
+
+  var [name_player1, hand_player1, pot_win_player1, name_player2, hand_player2, pot_win_player2] = finish_round_split_pot;
+
+  addMessage(name_player1 + ' with ' + hand_player1 + ' win ' + pot_win_player1 + "$");
+  addMessage(name_player2 + ' with ' + hand_player2 + ' win ' + pot_win_player2 + "$");
+  /*
+  addMessage(name_player1 + ' has ' + hand_player1 + ' win ' + pot_win_player1);
+  addMessage(name_player2 + ' has ' + hand_player2 + ' win ' + pot_win_player2);
+
+  addMessage(name_player1 + ' win ' + pot_win_player1);
+  addMessage(name_player2 + ' win ' + pot_win_player2);
+*/
+
+   setTimeout(function(){
+    clean_table();
+  }, time_to_show_end_round);
 
 });
+
 
 
 
@@ -347,6 +388,7 @@ socket.on('show_down', function(show_down){
 
 
 // Finish game
+/*
 socket.on('finish_game', function(finish_game){
   console.log('Received response finish_game');
   var [looser_name] = finish_game;
@@ -363,8 +405,16 @@ function hide_action_container(){
   setTimeout(function(){
     action_container.style.display = 'none'
   }, time_delay_hide_action_container);
-}
+}*/
 
+
+
+
+function hide_action_container(){
+  setTimeout(function(){
+    action_container.style.display = 'none'
+  }, time_delay_hide_action_container);
+}
 
 
 // Send message to server -------------------------------------------------------------------------------------
@@ -405,11 +455,21 @@ socket.on('redirect', function(data) {
 
 
 // Message container ---------------------------------------------------------
-function addMessage(message) {
+function addMessage(message, special=null) {
     const messageContainer = document.getElementById('messageContainer');
     const messageElement = document.createElement('div');
+
     messageElement.className = 'message';
     messageElement.textContent = message;
+
+    if (message === "New round") {
+        messageElement.classList.add('new-round');
+    }
+
+    if (special == 'end game'){
+        messageElement.classList.add('end-round');
+    }
+
     messageContainer.appendChild(messageElement);
 
     // Scroll to the bottom to show the latest message
@@ -469,6 +529,7 @@ socket.on('update_stack', function(update_stack){
 });
 */
 
+/*
 function toggleFullScreen() {
   if (!document.fullscreenElement) {
     document.documentElement.requestFullscreen();
@@ -481,5 +542,13 @@ function toggleFullScreen() {
 
 const button_fullscreen = document.getElementById('button_fullscreen');
 button_fullscreen.addEventListener('click', function(){
+    console.log('click');
   toggleFullScreen();
 });
+
+*/
+
+
+
+
+
