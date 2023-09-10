@@ -1,6 +1,6 @@
+keras==2.13.1
+azure-identity==1.14.0
+azure-keyvault-secrets==4.7.0
+openai==0.28.0
 Flask==2.3.2
 flask-socketio==5.3.4
-numpy==1.24.3
-keras==2.13.1
-tensorflow==2.13.0
-gunicorn~=20.1.0

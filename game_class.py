@@ -4,8 +4,10 @@ from player_class import Player
 
 class Game:
     def __init__(self, player_id):
+
         self.player_id = player_id
-        self.opponent = 'bot' # bot, ai , gpt
+        self.opponent = ''#'bot' # bot, ai , gpt
+
         self.game_generator = None
         self.player_decision = None
         self.state = None # 'end' or 'wait_player_decision'
@@ -19,6 +21,7 @@ class Game:
         self.state = self.game_generator.send(self.player_decision)
 
     def select_opponent(self, opponent):
+        print('function select opponent', opponent)
         self.opponent = opponent
 
     # kiedy otrzemam player_decision od klienta to:

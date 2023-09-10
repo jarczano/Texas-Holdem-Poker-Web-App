@@ -9,11 +9,11 @@ from setting import time_pause_round_end
 def game(opponent, player_id):
     print('game start')
     print('opponent', opponent)
-    print('player id ', player_id)
+    print('player id from game', player_id)
 
     player1 = Player('Alice', 1000, 0, 'human')
     # czy tam dalej w kodzie jest cos w zaleznosci od imienia ? chyba tak
-    opponent_dict = {'bot': 'Bob', 'ai': 'Celia', 'gpt': "Dylan"}
+    opponent_dict = {'bot': 'Bob', 'ai': 'Carol', 'gpt': "Dave"}
     opponent_name = opponent_dict[opponent]
 
     player2 = Player(opponent_name, 1000, 1, opponent)

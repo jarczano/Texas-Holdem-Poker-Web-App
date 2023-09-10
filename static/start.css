@@ -46,12 +46,21 @@ iframe{
   }
 
   #button_fsc{
+
     position: absolute;
     top: 5%;
     right: 5%;
     background-color: rgba(0, 0, 0, 0);
-    color: #fff;
+    /*color: #fff;*/
+    color:white;
+
     border: none;
     z-index: 1000;
   }
+
+  .icon {
+    filter: invert(100%);
+    width: 32px;
+    height: 32px;
+}
 

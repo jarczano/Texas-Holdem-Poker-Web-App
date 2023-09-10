@@ -1,4 +1,37 @@
+var currentPathname = window.location.pathname;
+var pathSegments = currentPathname.split('/');
+
+// Get the last segment (last word)
+var lastSegment = pathSegments[pathSegments.length - 1];
+
+// Now lastSegment contains the last word of the pathname
+console.log("Last segment: " + lastSegment);
+
+// tutaj trzeba wyslac informacje o przeciwniku
+
+
 var socket = io.connect(window.location.protocol + '//' + window.location.host);
+
+
+socket.on('connect', function () {
+  const sid = socket.id;
+  console.log("player id: ", sid);
+});
+
+
+socket.emit('select_opponent', lastSegment);
+
+var opponentDict = {
+    'bot': 'Bob',
+    'ai': 'Carol',
+    'gpt': 'Dave'
+};
+
+const opponent_name = document.getElementById('opponent_name');
+
+opponent_name.innerText = opponentDict[lastSegment];
+//var socket = window.sharedSocket;
+
 
 var show_end_round = false;
 const time_to_show_end_round = 7000;

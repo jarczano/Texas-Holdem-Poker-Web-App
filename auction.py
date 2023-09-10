@@ -1,16 +1,18 @@
 import random
 
+import joblib
+
 import setting
 from player_class import Player
 from bot import AI
 from deepAI import probability_win
 import numpy as np
-from setting import BB, show_game
+from setting import BB, SB, show_game
 from keras.models import load_model
 from flask_socketio import emit
 from flask import request
 from setting import socketio, games
-
+from utils import custom_argmax, get_content
 
 def auction(player_id, common_cards=None):
     """
@@ -68,6 +70,8 @@ def auction(player_id, common_cards=None):
                 pot_table = sum(input_stack_list) - sum(bet_list)  # to co jest w puli zbudowane przed biezaca licytacja
 
                 # ask player for decision
+                # to handle decision is dict_options, min_raise, max_raise and call_value. Additional information is pot
+
 
                 if player.kind == 'human':
 
@@ -120,11 +124,26 @@ def auction(player_id, common_cards=None):
 
                     observation.extend(stage_round)
 
-                    model = load_model('models/model_5001epoch-1688377898.490613.h5')
+                    print('observation vector: ', observation)
+                    model = load_model('models/model_20002epoch-1688915279.303047.h5')
+                    #model = joblib.load('models/model_5001epoch-1688377898.490613.h5')
+
 
                     # nie wiem czy jeszcze nie trzeba .reshape(1, 9)
-                    best_action_index = np.argmax(model.predict(np.array(observation)))
 
+                    # without numpy
+                    #best_action_index = custom_argmax(model.predict(observation))
+                    #best_action_index = custom_argmax(model.predict(np.array(observation).reshape(1, 7)))
+
+                    # numpy
+                    #best_action_index = np.argmax(model.predict(np.array(observation).reshape(1, 7)))
+                    #print('best_action_index with np', best_action_index)
+                    #best_action_index = np.argmax(model.predict([observation]))
+                    #print("model.predict([observation]): ", model.predict([observation]))
+                    #print('model.predict(np.array(observation).reshape(1, 7)): ',model.predict(np.array(observation).reshape(1, 7)))
+
+                    best_action_index = custom_argmax(model.predict([observation])[0])
+                    #print('best_action_index without np', best_action_index)
                     # Needs best action from DNN approximate to best possible action in state
 
                     # There are 5 possible set of action
@@ -180,10 +199,146 @@ def auction(player_id, common_cards=None):
                             decision = ['all-in']
 
                 elif player.kind == 'gpt':
-                    # write code for gpt
-                    pass
+                    print("GPT OPEN AI")
+                    decision = None
+
+                    # Create first stage prompt
+                    if common_cards is None:
+                        stage_round = 'Preflop'
+                    elif len(common_cards) == 3:
+                        stage_round = 'Flop'
+                    elif len(common_cards) == 4:
+                        stage_round = 'Turn'
+                    else:
+                        stage_round = 'River'
+
+                    # common_cards = ['AS', '2C', '5D']
+                    if common_cards is None:
+                        info_stage = 'Preflop. '
+                    else:
+                        name_cards = ', '.join(common_cards)
+                        info_stage = stage_round + 'cards are ' + name_cards + '. '
+
+                    name_player_cards = ', '.join(player.cards)
+                    first_prompt = 'Heads-Up Texas Holdem. Blinds are ' + str(SB) + '/' + str(BB) + '. Pot is ' + str(pot) + '. ' + info_stage + 'I have ' + name_player_cards + '. '
+
+                    # opponent raise info
+                    # where come from opponent raise value ?
+                    # call_value
+                    if dict_options['call']:
+                        info_opponent_raise = 'Opponent raise ' + str(call_value) + '. '
+                        first_prompt += info_opponent_raise
+
+                    # prepare text available option
+                    if dict_options['check']:
+                        dict_options['fold'] = False
+                    true_keys = [f"'{key}'" for key, value in dict_options.items() if value]
+                    text_question = 'Answer with one word: ' + ', '.join(true_keys)
+
+                    option_prompt = first_prompt + text_question
+
+                    counter_try_option = 0
+                    max_counter_try_option = 5
+                    success_try_option = False
+
+                    while counter_try_option < max_counter_try_option and not success_try_option:
+
+                        counter_try_option += 1
+
+                        print('option prompt:', option_prompt)
+
+                        # CONNECT API GPT HERE respond -> generate response for option_prompt
 
 
+                        # PLACE TO TEST MECHANISM PROCESS OF RESPOND IMPORTANT
+
+                        #respond = 'bla sra ihaha raise xdfs' # delete this later
+                        respond = get_content(option_prompt)
+                        print('response 1:', respond)
+                        # process respond to decision
+                        # text -> list of word
+                        # check the words
+                        respond_words = respond.split()
+
+                        # process first step
+
+                        if 'check' in respond_words:
+                            decision = ['check']
+                            success_try_option = True
+                        elif 'fold' in respond_words:
+                            decision = ['fold']
+                            success_try_option = True
+                        elif 'call' in respond_words:
+                            decision = ['call']
+                            success_try_option = True
+                        elif 'raise' in respond_words:
+                            decision = ['raise', None]
+
+                            success_try_option = True
+
+                            counter_try_raise_val = 0
+                            max_counter_try_raise_val = 5
+                            success_try_val = False
+
+                            # ask second question about how much raise
+                            decision_prompt_how_raise = first_prompt + 'Try selecting a raise. Answer only with one number'
+
+                            while counter_try_raise_val < max_counter_try_raise_val and not success_try_val:
+                                counter_try_raise_val += 1
+
+                                print('decision prompt how mauch raise', decision_prompt_how_raise)
+
+                                # API GPT
+                                # respond_how_much -> generate for decision_prompt_how_raise
+                                #respond_how_much = 'bla bla raise bla 2gfd00' # delete this later
+
+                                respond_how_much = get_content(decision_prompt_how_raise)
+                                print('response 2:', respond_how_much)
+
+                                # process respond
+                                respond_words = respond_how_much.split()
+
+                                int_elements = [element for element in respond_words if element.isdigit()]
+                                raise_value = None
+
+                                if int_elements:
+                                    raise_value = int(int_elements[0])
+
+                                if raise_value is not None:
+                                    success_try_val = True
+                                    # this is value which choose GPT
+                                    # but now need to campare with available raise value
+                                    # and if
+                                    print('raise_value',raise_value)
+                                    if min_raise < raise_value < max_raise:
+                                        available_raise_value = raise_value
+                                    elif raise_value < min_raise:
+                                        available_raise_value = min_raise
+                                    elif raise_value > max_raise:
+                                        available_raise_value = max_raise
+
+                                    decision = ['raise', available_raise_value]
+
+                    # tutaj trzeba sprawdzic czy udało mu sie zwrócic poprawna odpowiedz, jak nie to cos z tym zrobic
+                    # Check if gpt returns correct answer, if not handle this
+                    # if decision ALE tu moze nie być jeszcze zadnej decision
+
+
+                    if decision is None:
+                        if dict_options['check']:
+                            decision = ['check']
+                        elif dict_options['call']:
+                            decision = [random.choice(['call', 'fold'])]
+                        else:
+                            decision = ['fold']
+
+                    if decision[0] == 'raise':
+                        if decision[1] is None:
+                            decision[1] = min_raise
+
+
+
+                    print('gpt decision', decision)
 
 
                 # Processing of player decision
