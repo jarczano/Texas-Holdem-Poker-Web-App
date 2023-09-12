@@ -1,15 +1,21 @@
 import random
 import time
-
-from auction import auction
-from poker_score import players_score
-from split_pot import one_player_win, change_players_positions, split_pot
-from player_class import Player
-from setting import BB, SB, show_game, time_pause_round_end
 from flask_socketio import emit
+
+from app.auction import auction
+from app.poker_score import players_score
+from app.split_pot import one_player_win, change_players_positions, split_pot
+from app.player_class import Player
+from setting import BB, SB, show_game, time_pause_round_end
 
 
 def poker_round(player_id):
+    """
+    This function works as generator. Play one round of dealing cards.
+    Sends information to the client about situation on the table.
+    :param player_id:
+    :return: yield 'wait_for_player_decision' when is turn for client.
+    """
 
     player_list_chair = Player.player_list_chair
     player_list = Player.player_list
@@ -39,13 +45,8 @@ def poker_round(player_id):
         emit('message_decision', player_list[-2].name + ' small blind ' + player_list[-2].input_stack + "$", room=player_id)
         emit('message_decision', player_list[-2].name + ' short stack all-in ' + player_list[-2].input_stack, room=player_id)
 
-
-    #join_room(player_id)
     # send info about blind to the client
     for player in player_list_chair:
-
-        #socketio.emit('update_bet', [player.name, player.input_stack])
-
         emit('update_bet', [player.name, player.input_stack], room=player_id)
         emit('update_stack', [player.name, player.stack], room=player_id)
 
@@ -78,7 +79,7 @@ def poker_round(player_id):
 
     # Check how many players are in the game and all-in
     number_live_players = sum([player.live for player in player_list])  # 1
-    number_allin_players = sum([player.alin for player in player_list]) # 0
+    number_allin_players = sum([player.alin for player in player_list])  # 0
 
     if number_live_players > 1:
         # First auction
@@ -92,15 +93,9 @@ def poker_round(player_id):
         for player in player_list:
             emit('update_bet', [player.name, 0], room=player_id)
 
-
-        #for player in player_list:
-        #    player.reward = 0
     # Check how many players are in the game and all-in
     number_live_players = sum([player.live for player in player_list])  # 1
     number_allin_players = sum([player.alin for player in player_list]) # 0
-
-    #for player in player_list:
-   #     player.reward = 0
 
     # change order decision player
     if len(player_list_chair) == 2:
@@ -141,7 +136,6 @@ def poker_round(player_id):
             for player in player_list:
                 emit('update_bet', [player.name, 0], room=player_id)
 
-
         # Check how many players are in the game and all-in
         number_live_players = sum([player.live for player in player_list])
         number_allin_players = sum([player.alin for player in player_list])
@@ -170,7 +164,6 @@ def poker_round(player_id):
 
             if show_game:
                 print("Turn cards: {}".format(common_cards))
-            #print('Turn: ', common_cards)
 
             if number_live_players > 1:
                 # Third auction
@@ -179,8 +172,6 @@ def poker_round(player_id):
                 # reset auction bet
                 for player in player_list:
                     emit('update_bet', [player.name, 0], room=player_id)
-
-
 
             # Check how many players are in the game and all-in
             number_live_players = sum([player.live for player in player_list])
@@ -216,7 +207,6 @@ def poker_round(player_id):
                     for player in player_list:
                         emit('update_bet', [player.name, 0], room=player_id)
 
-
                 # Check how many players are in the game and all-in
                 number_live_players = sum([player.live for player in player_list])
                 number_allin_players = sum([player.alin for player in player_list])
@@ -250,5 +240,4 @@ def poker_round(player_id):
 
                     # Return players to the original position
                     change_players_positions(shift_decision)
-
 

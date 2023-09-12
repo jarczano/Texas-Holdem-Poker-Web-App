@@ -1,37 +1,18 @@
 
-//var testFunction = function test() {alert('hello world')};
+function lock (orientation) {
+  // (A1) GO INTO FULL SCREEN FIRST
+  let de = document.documentElement;
+  if (de.requestFullscreen) { de.requestFullscreen(); }
+  else if (de.mozRequestFullScreen) { de.mozRequestFullScreen(); }
+  else if (de.webkitRequestFullscreen) { de.webkitRequestFullscreen(); }
+  else if (de.msRequestFullscreen) { de.msRequestFullscreen(); }
 
-/*
-var testFunction = "export test";
-export default  testFunction ;
-*/
-
-//socket = io.connect(window.location.protocol + '//' + window.location.host);
-//var socket = io({ query: { sid: sessionID } });
-//var socket = io({ query: { sid: 'jCECT1gk360a4nCvAAAC' } });
-//var socket = io()
-/*export default socket;
-*/
-//socket.emit('transfer_socket', socket)
-
-//console.log("how looks socker", socket);
-
-/*
-socket.on('connect', function () {
-  const sid = socket.id;
-  //console.log("Connected...!", socket.connected);
-  console.log("Client start. player id: ", sid);
-});
-*/
-/*
-function toggleFullScreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
-  } else if (document.exitFullscreen) {
-    document.exitFullscreen();
-  }
+  // (A2) THEN LOCK ORIENTATION
+  screen.orientation.lock(orientation);
 }
-*/
+
+//lock('landscape')
+
 function toggleFullScreen() {
     const button = document.getElementById('button_fsc');
     if (!document.fullscreenElement) {
@@ -46,13 +27,9 @@ function toggleFullScreen() {
 }
 
 
-
-
 const button_fullscreen = document.getElementById('button_fullscreen');
 const menu_frame = document.getElementById('menu_frame');
 const play_container = document.getElementById('play-container')
-
-
 const button_fsc = document.getElementById('button_fsc');
 
 button_fsc.addEventListener('click', function(){

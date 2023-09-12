@@ -7,11 +7,9 @@ var lastSegment = pathSegments[pathSegments.length - 1];
 // Now lastSegment contains the last word of the pathname
 console.log("Last segment: " + lastSegment);
 
-// tutaj trzeba wyslac informacje o przeciwniku
 
-
-var socket = io.connect(window.location.protocol + '//' + window.location.host);
-
+//var socket = io.connect(window.location.protocol + '//' + window.location.host);
+var socket = io();
 
 socket.on('connect', function () {
   const sid = socket.id;
@@ -59,8 +57,6 @@ const player_bet = document.getElementById('player_bet');
 const opponent_bet = document.getElementById('opponent_bet');
 const pot = document.getElementById('pot');
 
-
-
 const button_call = document.getElementById('button_call');
 const button_check = document.getElementById('button_check');
 const button_All_in = document.getElementById('button_All-in');
@@ -94,7 +90,6 @@ socket.on('connect', function () {
 
 
 
-
 // Player card
 socket.on('deal_player_cards', function(deal_player_cards){
   console.log('Received response deal_player_card');
@@ -104,7 +99,7 @@ socket.on('deal_player_cards', function(deal_player_cards){
   player_card2.src = '../static/image/'+ text_player_card2 + '.png';
   player_card1.style.display = 'flex';
   player_card2.style.display = 'flex';
-  // mozna dopisać zeby też rozdał przeciwnikowi ale to z jakas animacja zas
+
 });
 
 
@@ -157,38 +152,6 @@ socket.on('deal_river_card', function(deal_river_card){
   addMessage('River card: ' + text_river_card1)
 });
 
-// Change my mind, opponent decision will be dispaly only in message container
-// Opponent decision
-/*
-
-const opponent_decision = document.getElementById('opponent_decision');
-
-socket.on('opponent_decision', function(opponent_dec){
-  console.log('Received response opponent_decision');
-  console.log(opponent_dec);
-
-  var [text_decision, raise_value] = opponent_dec;
-  // tutaj jeszcze jakies animacje pewnie i jako funckje to odpalic
-  if (text_decision == 'Raise'){
-    text = text_decision + " " + String(raise_value) + " $"
-
-  }
-  else{text = text_decision}
-  opponent_decision.innerText = text;
-  opponent_decision.style.display = 'flex';
-
-  // tutaj nie ma czym jest name_opponent
-  //addMessage(name_opponent + ' ' + text)
-});
-
-
-// Hide opponent decision
-socket.on('hide_opponent_decision', function(){
-    opponent_decision.style.display = 'none';
-});
-
-*/
-
 
 socket.on('message_decision', function(text_message){
     addMessage(text_message);
@@ -198,7 +161,6 @@ socket.on('message_decision', function(text_message){
 socket.on('finish_game', function(text_message){
     addMessage(text_message, 'end game');
 });
-
 
 
 // Player option
@@ -267,8 +229,6 @@ socket.on('update_bet', function(update_bet){
   }
 );
 
-
-
 // update stack value
 socket.on('update_stack', function(update_stack){
   var [player_name, new_player_stack] = update_stack;
@@ -289,8 +249,6 @@ socket.on('update_pot', function(update_pot){
 });
 
 
-
-
 function clean_table(){
     // reset view table, card, bet, pot
     player_card1.style.display = 'none';
@@ -308,24 +266,6 @@ function clean_table(){
 }
 
 
-
-// Finish round -> one player win
-/*
-socket.on('finish_round_one_player', function(finish_round_one_player){
-
-  console.log('Received response finish_round');
-  var [winner_name, pot_win] = finish_round_one_player;
-  game_info.innerText = winner_name + " win " + pot_win;
-  game_info.style.display = 'flex';
-
-  addMessage(winner_name + " win " + pot_win);
-   setTimeout(function(){
-    game_info.style.display = 'none';
-    clean_table();
-  }, time_to_show_end_round);
-});
-*/
-
 // Finish round -> one player win
 socket.on('finish_round_one_player', function(finish_round_one_player){
 
@@ -342,46 +282,6 @@ socket.on('finish_round_one_player', function(finish_round_one_player){
 
 
 
-/*
-// finish round -> winners
-socket.on('finish_round_split_pot', function(finish_round_split_pot){
-  console.log('Received response finish_round');
-
-  var [player_name, player_hand, player_pot_win] = finish_round_split_pot;
-
-  game_info.innerText = player_name + ' with ' + player_hand + ' win ' + player_pot_win + " $"
-  //game_info.innerText = "Alice with "+ hand_player +" win " + pot_win_player +'\n' + "Bob with " + hand_opponent + "  win " + pot_win_opponent;
-
-  //player_stack.textContent = new_stack_player
-  //opponent_stack.textContent = new_stack_opponent
-  // tutaj jeszcze trzeba odslonic karty przeciwnika
-  // show down
-  opponent_card1.src = '../static/image/' + text_opponent_card1 + ".png";
-  opponent_card2.src = '../static/image/' + text_opponent_card2 + ".png";
-  // potem jeszcze w nowej rundzie pamietac zeby zaslonic karty przeciwnika
-});
-*/
-
-// Finish round -> split pot
-/*
-socket.on('finish_round_split_pot', function(finish_round_split_pot){
-  console.log('Received response finish_round');
-
-  var [name_player1, hand_player1, pot_win_player1, name_player2, hand_player2, pot_win_player2] = finish_round_split_pot;
-  game_info.innerText = name_player1 + ' with ' + hand_player1 + ' win ' + pot_win_player1 + '\n' + name_player2 + ' with ' + hand_player2 + ' win ' + pot_win_player2;
-  game_info.style.display = 'flex';
-
-
-  addMessage(name_player1 + ' with ' + hand_player1 + ' win ' + pot_win_player1);
-  addMessage(name_player2 + ' with ' + hand_player2 + ' win ' + pot_win_player2);
-
-   setTimeout(function(){
-    game_info.style.display = 'none';
-    clean_table();
-  }, time_to_show_end_round);
-});
-*/
-
 socket.on('finish_round_split_pot', function(finish_round_split_pot){
   console.log('Received response finish_round');
 
@@ -390,17 +290,15 @@ socket.on('finish_round_split_pot', function(finish_round_split_pot){
   addMessage(name_player1 + ' with ' + hand_player1 + ' win ' + pot_win_player1 + "$");
   addMessage(name_player2 + ' with ' + hand_player2 + ' win ' + pot_win_player2 + "$");
   /*
-  addMessage(name_player1 + ' has ' + hand_player1 + ' win ' + pot_win_player1);
-  addMessage(name_player2 + ' has ' + hand_player2 + ' win ' + pot_win_player2);
+  addMessage(name_player1 + ' has ' + hand_player1);
+  addMessage(name_player2 + ' has ' + hand_player2);
 
   addMessage(name_player1 + ' win ' + pot_win_player1);
   addMessage(name_player2 + ' win ' + pot_win_player2);
 */
-
    setTimeout(function(){
     clean_table();
   }, time_to_show_end_round);
-
 });
 
 
@@ -409,36 +307,12 @@ socket.on('finish_round_split_pot', function(finish_round_split_pot){
 // show down
 socket.on('show_down', function(show_down){
   console.log('Received response show_down');
-
   var [text_opponent_card1 ,text_opponent_card2] = show_down;
 
-  // show down
   opponent_card1.src = '../static/image/' + text_opponent_card1 + ".png";
   opponent_card2.src = '../static/image/' + text_opponent_card2 + ".png";
-  // potem jeszcze w nowej rundzie pamietac zeby zaslonic karty przeciwnika
 });
 
-
-
-// Finish game
-/*
-socket.on('finish_game', function(finish_game){
-  console.log('Received response finish_game');
-  var [looser_name] = finish_game;
-  if (looser_name == 'Alice'){
-    winner_name = name_opponent
-  }
-  else{ winner_name = 'Alice'}
-  game_info.style.display = 'flex';
-  game_info.innerText = winner_name + ' win game';
-
-});
-
-function hide_action_container(){
-  setTimeout(function(){
-    action_container.style.display = 'none'
-  }, time_delay_hide_action_container);
-}*/
 
 
 
@@ -451,31 +325,31 @@ function hide_action_container(){
 
 
 // Send message to server -------------------------------------------------------------------------------------
-// send call player decision to serwer
+// send call player decision to server
 button_call.addEventListener('click', function(){
   socket.emit('player_decision', ['call', 0])
   hide_action_container()
 });
 
-// send check player decision to serwer
+// send check player decision to server
 button_check.addEventListener('click', function(){
   socket.emit('player_decision', ['check', 0])
   hide_action_container()
 });
 
-// send fold player decision to serwer
+// send fold player decision to server
 button_Fold.addEventListener('click', function(){
   socket.emit('player_decision', ['fold', 0])
   hide_action_container()
 });
 
-// send all-in player decision to serwer
+// send all-in player decision to server
 button_All_in.addEventListener('click', function(){
   socket.emit('player_decision', ['all-in', 0])
   hide_action_container()
 });
 
-// send raise player decision to serwer
+// send raise player decision to server
 button_Raise.addEventListener('click', function(){
   socket.emit('player_decision', ['raise', slider_raise.value])
   hide_action_container()
@@ -508,80 +382,4 @@ function addMessage(message, special=null) {
     // Scroll to the bottom to show the latest message
     messageContainer.scrollTop = messageContainer.scrollHeight;
 }
-
-
-
-
-
-/*
-// update_stack_after_player_decision
-socket.on('update_stack', function(update_stack){
-  console.log('Received response update_stack');
-  var [new_stack_player, new_bet_player, new_pot] = update_stack;
-  player_stack.textContent = new_stack_player;
-  player_bet.textContent = new_bet_player;
-  pot.textContent = new_pot;
-});
-*/
-
-
-
-/*
-
-// Player card
-socket.on('deal_player_cards', function(deal_player_cards){
-  console.log('Received response deal_player_card');
-  var [text_player_card1, text_player_card2] = deal_player_cards;
-  show_player_cards(text_player_card1, text_player_card2)
-
-  // mozna dopisać zeby też rozdał przeciwnikowi ale to z jakas animacja zas
-});
-
-
-function show_player_cards(text_player_card1, text_player_card2){
-  if (show_end_round){
-  console.log('not show_end_round');
-    setTimeout(() => show_player_cards(text_player_card1, text_player_card2), 200);
-  }
-  else{
-   console.log('show_end_round');
-    player_card1.src = '../static/image/' + text_player_card1 + '.png';
-    player_card2.src = '../static/image/'+ text_player_card2 + '.png';
-  }
-
-}
-*/
-
-/*
-// update_stack
-socket.on('update_stack', function(update_stack){
-  console.log('Received response update_stack');
-  var [new_stack_player, new_stack_opponent] = update_stack;
-  player_stack.textContent = new_stack_player
-  opponent_stack.textContent = new_stack_opponent
-});
-*/
-
-/*
-function toggleFullScreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
-  } else if (document.exitFullscreen) {
-    document.exitFullscreen();
-  }
-}
-
-
-
-const button_fullscreen = document.getElementById('button_fullscreen');
-button_fullscreen.addEventListener('click', function(){
-    console.log('click');
-  toggleFullScreen();
-});
-
-*/
-
-
-
-
 

@@ -3,12 +3,6 @@ body {
     padding: 0;
     height: 100vh;
     overflow: hidden;
-
-    /*
-    background-image: url("../static/image/game_bcg.png");
-    background-size: cover;
-    background-position: center;
-    */
     font-family: 'Orbitron', sans-serif;
 }
 
@@ -69,15 +63,7 @@ body {
 .player_stuff_container{
     /*background-color: coral;*/
     position: absolute;
-    /*
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    */
-    /* Ustawia dwie równe kolumny */
     display:flex;
-    /*grid-gap: 10px;*/ /* Dodatkowy odstęp między kolumnami */
-    /*width: 40%;*/
-    /*max-height: 20%;*/
     height: 25vh;
     bottom: 7%;
     max-width: 40vw;
@@ -145,17 +131,6 @@ body {
 
 /*oppoent card  -------------------------------------------------------------*/
 .opponent_stuff_container{
-    /*background-color: coral;*/
-
-    /*
-    position: absolute;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    grid-gap: 10px;
-    width: 40vh;
-    height: 20vh;
-    top: 2%;*/
-
     position: absolute;
     display:flex;
     height: 25vh;
@@ -169,7 +144,6 @@ body {
     /*background-color: blue;*/
     height: 100%;
    display: flex;
-
 }
 
 .opponent_card{
@@ -191,24 +165,6 @@ body {
 }
 
 #opponent_info_container{
-/*
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    border: 2px solid #cacad1;
-    background: linear-gradient(to right, #252629, #201e2c);
-    border-radius: 5px;
-    font-size: 2vw;
-    color: #333;
-    height: 60%;
-    color: white;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -227,7 +183,6 @@ body {
     height: 60%;
     color: white;
     position: relative;
-
 }
 
 .opponent_name{
@@ -394,19 +349,6 @@ video {
             background: black;
             display: flex;
         }
-
-    }
-
-#button_fullscreen {
-    position: absolute;
-    top: 5%;
-    right: 5%;
-    background-color: rgba(0, 0, 0, 0);
-    color: #fff;
-    border: none;
-    /*border-radius: 50%;
-    padding: 10px;
-    cursor: pointer;*/
-    z-index: 1000;
 }
+
 

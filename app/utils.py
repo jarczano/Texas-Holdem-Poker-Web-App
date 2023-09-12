@@ -1,6 +1,7 @@
 import socket
 import openai
 
+
 def get_ipv4_address():
     """
     Function return local ip address
@@ -15,17 +16,13 @@ def get_ipv4_address():
     return local_ip_address
 
 
-def custom_argmax2(arr):
-
-    max_value = arr[0]
-    max_index = 0
-    for i, value in enumerate(arr):
-        if value > max_value:
-            max_value = value
-            max_index = i
-    return max_index
-
 def custom_argmax(arr):
+    """
+    The function returns the number of the argument that has the highest value.
+    Its this same as numpy.argmax
+    :param arr: list of numbers
+    :return: index of max value
+    """
     max_value = arr[0]
     max_index = 0
     for i in range(1, len(arr)):
@@ -35,10 +32,15 @@ def custom_argmax(arr):
     return max_index
 
 
-def get_content(in_prompt):
+def get_content(prompt):
+    """
+    Function return response for given prompt from OpenAI ChatGPT
+    :param prompt: text of prompt
+    :return: text response for prompt
+    """
     content_json = openai.ChatCompletion.create(model='gpt-3.5-turbo',
                                             messages=[
-                                                {'role': 'user', 'content': in_prompt}
+                                                {'role': 'user', 'content': prompt}
                                             ],
                                         temperature=0.7,
                                         max_tokens=10)

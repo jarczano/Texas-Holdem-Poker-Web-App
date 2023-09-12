@@ -1,6 +1,4 @@
-import numpy as np
-import operator
-from player_class import Player
+from app.player_class import Player
 from setting import show_game
 from flask_socketio import emit
 import operator
@@ -89,7 +87,6 @@ def split_pot(player_id):
     emit('finish_round_split_pot', emit_content, room=player_id)
 
 
-
 def one_player_win(player_id):
 
     #  Function changing player stack who win, and return list tuple who win and how much
@@ -109,7 +106,6 @@ def one_player_win(player_id):
                 print("{} win {}".format(player.name,  win_value - player.input_stack))
 
 
-
 def change_players_positions(shift):
     # Function change each player position
     # order in Player.player_list are changed
@@ -121,62 +117,3 @@ def change_players_positions(shift):
         player.position = (player.position + shift) % number_players
     player_list.sort(key=operator.attrgetter('position'))
 
-
-'''
-player_score = [160, 140, 140, 140, 130]
-input_stack = [200, 100, 1000, 1200, 800]
-
-
-#split_pot(player_score, input_stack)
-
-
-
-
-
-import PlayerClass
-
-start_stack = 5000
-Jarek = PlayerClass.Player('Jarek', start_stack, 0)
-Kuba = PlayerClass.Player('Kuba', start_stack, 1)
-Darek = PlayerClass.Player('Darek', start_stack, 2)
-Marek = PlayerClass.Player('Marek', start_stack, 3)
-Player_list = [Jarek, Kuba, Darek, Marek]
-stack_list_before = [0] * 4
-for i in range(4):
-    stack_list_before[i] = Player_list[i].stack
-print('before: ', stack_list_before)
-Jarek.stack -= 250
-stack_list_after = [0] * 4
-for i in range(4):
-    stack_list_after[i] = Player_list[i].stack
-
-print('after: ', stack_list_after)
-
-import PlayerClass
-import operator
-start_stack = 5000
-Jarek = PlayerClass.Player('Jarek', start_stack, 0)
-Kuba = PlayerClass.Player('Kuba', start_stack, 1)
-Darek = PlayerClass.Player('Darek', start_stack, 2)
-Marek = PlayerClass.Player('Marek', start_stack, 3)
-Player_list = [Jarek, Kuba, Darek, Marek]
-
-small_blind = 25
-big_blind = 50
-Marek.drop(big_blind)
-Darek.drop(small_blind)
-first_auction(Player_list)
-first_auction(Player_list)
-
-Jarek.score = 100
-Jarek.drop(150)
-Kuba.score = 100
-Kuba.drop(100)
-Marek.score = 160
-Marek.drop(500)
-Darek.score = 90
-Darek.drop(600)
-split_pot(Player_list)
-'''
-#for player in Player_list:
-#    print(player.name, player.stack)

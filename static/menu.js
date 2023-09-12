@@ -1,93 +1,6 @@
-/*
-document.getElementById('play_with_bot').addEventListener('click', function() {
-    window.location.href = "{{ url_for('play', opponent='bot') }}";
-});
-
-
-document.getElementById('play_with_ai').addEventListener('click', function() {
-    window.location.href = "{{ url_for('play', opponent='ai') }}";
-});
-
-*/
-/*
-window.matchMedia('(orientation: portrait)').addEventListener('change', event => {
- const portrait = event.matches;
- if (portrait){
-    alert('portait')
- }
- else{alert('landscape')}
-});
-*/
-
-/*
-import socket from './start.js';
-*/
-
-//import { testFunction } from '../static/start.js';
-//import { testFunction } from '../start.js'
-//console.log('from menu');
-//console.log(testFunction);
-//console.log(window.sharedVariable);
-
-//var socket = window.socket
-
-//var socket = io();
-/*export default socket;
-*/
-
-/*
-socket.on('connect', function () {
-  const sid = socket.id;
-  console.log("Client menu. player id: ", sid);
-});
-*/
-
-
-function lock (orientation) {
-  // (A1) GO INTO FULL SCREEN FIRST
-  let de = document.documentElement;
-  if (de.requestFullscreen) { de.requestFullscreen(); }
-  else if (de.mozRequestFullScreen) { de.mozRequestFullScreen(); }
-  else if (de.webkitRequestFullscreen) { de.webkitRequestFullscreen(); }
-  else if (de.msRequestFullscreen) { de.msRequestFullscreen(); }
-
-  // (A2) THEN LOCK ORIENTATION
-  screen.orientation.lock(orientation);
-}
-
-
-//lock('landscape')
-
-
-/*
-var socket = io.connect(window.location.protocol + '//' + window.location.host);
-*/
-
 var button_bot = document.getElementById('play_with_bot');
 var button_ai = document.getElementById('play_with_ai');
 var button_gpt = document.getElementById('play_with_gpt');
-
-/*
-function playWithBot() {
-    sessionStorage.setItem('name_opponent', 'Bob');
-    socket.emit('select_opponent', 'bot');
-    window.location.href = "/play/";
-}
-
-function playWithAI() {
-    sessionStorage.setItem('name_opponent', 'Celia');
-    socket.emit('select_opponent', 'AI');
-    window.location.href = "/play/";
-    }
-*/
-
-/*
-socket.on('connect', function () {
-      const sid = socket.id;
-  console.log("Connected...!", socket.connected);
-  console.log("SID", sid);
-});
-*/
 
 var selectedOpponent = "bot";
 
@@ -95,7 +8,7 @@ function selectOpponent(opponent){
     selectedOpponent = opponent;
     updateOpponentInfo();
 }
-//'../static/image/' + text_flop_card3 + ".png";
+
 
 function updateOpponentInfo() {
     const opponentPhoto = document.getElementById("opponent-photo");
@@ -133,43 +46,9 @@ function updateOpponentInfo() {
   }
 
 
-
-
-/*
 function play(){
-    console.log("select_opponent...!", selectedOpponent);
-    socket.emit('select_opponent', selectedOpponent);
-    setTimeout(function() {
-        window.location.href = "/play/";
-    }, 10)
-}*/
-
-function play(){
-    console.log("select_opponent...!", selectedOpponent);
-    //text_href= "/play/bot" ;//+ selectedOpponent;
-    text_href= "/play/" + selectedOpponent;
-    console.log(text_href);
-    //socket.emit('select_opponent', selectedOpponent);
-    window.location.href = text_href;
+    console.log("select_opponent: ", selectedOpponent);
+    window.location.href = "/play/" + selectedOpponent;
 }
 
 updateOpponentInfo();
-
-//selectOpponent('bot');
-
-
-function toggleFullScreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
-  } else if (document.exitFullscreen) {
-    document.exitFullscreen();
-  }
-}
-
-
-
-const button_fullscreen = document.getElementById('button_fullscreen');
-button_fullscreen.addEventListener('click', function(){
-  toggleFullScreen();
-  lock('landscape')
-});

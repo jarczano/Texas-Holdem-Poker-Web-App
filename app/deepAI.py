@@ -6,11 +6,14 @@ class Bot:
 
 
 def probability_win(own_cards, n_players, common_cards=None):
-    # Bot calculates the probability of winning simulating 5,000 games with such cards
+    """
+    Calculates the probability of winning simulating n games with such own cards
+    :return: probability of win, probability of tie
+    """
     import random
-    from poker_score import players_score
+    from app.poker_score import players_score
 
-    number_games = 1000
+    number_games = 500
     n_win = 0
     n_tie = 0
     ai = Bot()
@@ -29,7 +32,7 @@ def probability_win(own_cards, n_players, common_cards=None):
         [deck.remove(card) for card in common_cards]
 
     # create artificial bots as many as there are opponents
-    list_bots = []  # czy tego sie nie dało jakos ladnioe zapisywac
+    list_bots = []
     for nbot in range(n_players - 1):
         list_bots.append(Bot())
 
@@ -59,8 +62,4 @@ def probability_win(own_cards, n_players, common_cards=None):
 
     return n_win / number_games, n_tie / number_games
 
-#own_cards = ['AS', 'KD']
-#common_cards = ['QS', 'KH', 'AC']
-#n_players = 2
-#p_win, p_tie = probability_win(own_cards, n_players, common_cards)
-#print(p_win, p_tie)
+

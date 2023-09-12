@@ -1,8 +1,13 @@
 import itertools
-from player_class import Player
+
 
 def hand(composition):
-
+    """
+    Function calculate the score of hand composition.
+    Method of calculating score is relative, just better composition gets higher score.
+    :param composition: list of five cards. ex. ['2D', '3C', 'AH' , 'AC', '7D']
+    :return: score of composition and name of hand ranking
+    """
     # Split colors and figures cards
     handfigure = [card[0] for card in composition]
     handcolor = [card[1] for card in composition]
@@ -104,14 +109,12 @@ def hand(composition):
 
 
 def players_score(player_list, common_cards):
-    # input: common cards
-    # function calculates and assigns each player a score of his cards and name of hand ranking
-    #player_list = Player.player_list_chair.copy()
-
-    # Don't calculate score for players who fold
-    #for player in player_list:
-    #    if player.live is False and player.alin is False:
-    #        player_list.remove(player)
+    """
+    Function calculates and assigns each player a score of his cards and name of hand ranking
+    :param player_list: list of players for whom score are to be calculated
+    :param common_cards:
+    :return: nothing, function assigns a score to player object
+    """
 
     for player in player_list:
         best_score, best_hand = 0, ''
@@ -121,6 +124,3 @@ def players_score(player_list, common_cards):
             if combination_score > best_score:
                 best_score = combination_score
                 player.score, player.hand = best_score, combination_name
-
-    #for player in player_list:
-    #    print(player.name, player.hand)

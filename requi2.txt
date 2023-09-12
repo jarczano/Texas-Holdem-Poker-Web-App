@@ -1,5 +1,0 @@
-Flask==2.3.2
-flask-socketio==5.3.4
-numpy==1.24.3
-keras==2.13.1
-gunicorn~=20.1.0

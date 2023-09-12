@@ -1,2 +1,0 @@
-runtime: python 310
-entrypoint: gunicorn -b :$PORT main:app

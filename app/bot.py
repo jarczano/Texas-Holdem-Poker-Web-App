@@ -9,9 +9,11 @@ class Bot:
 
 
 class AI:
-
+    """
+    Class for math bot
+    """
     def __init__(self, own_cards, dict_options, call_value, min_raise, max_raise, pot, n_players, common_cards=None):
-        self.own_cards = own_cards #['AS', '4C']
+        self.own_cards = own_cards  # ex. ['AS', '4C']
         self.common_cards = common_cards
         self.dict_options = dict_options
         self.call_value = call_value
@@ -21,9 +23,13 @@ class AI:
         self.n_players = n_players
 
     def probability_win(self):
-        # Bot calculates the probability of winning simulating n games with such cards
+        """
+        Calculates the probability of winning simulating n games with such own cards
+        :return: probability of win, probability of tie
+        """
+
         import random
-        from poker_score import players_score
+        from app.poker_score import players_score
 
         number_games = 500
         n_win = 0
@@ -41,15 +47,14 @@ class AI:
         [deck.remove(card) for card in ai.cards]
 
         if self.common_cards is not None:
-            #print('common cards',self.common_cards)
             [deck.remove(card) for card in self.common_cards]
 
         # create artificial bots as many as there are opponents
-        list_bots = [] # czy tego sie nie dało jakos ladnioe zapisywac
+        list_bots = []
         for nbot in range(self.n_players - 1):
             list_bots.append(Bot())
 
-        # simulating game
+        # simulating games
         for i in range(number_games):
             bot_deck = deck.copy()
             for bot in list_bots:
@@ -76,8 +81,13 @@ class AI:
         return n_win / number_games, n_tie / number_games
 
     def decision(self):
-        # function return ai decision: fold, call, check, all-in, raise and value raise
-        BB = 50  # importować to potem albo jako argument funkcji
+        """
+        Function make decision based on probability win, p. tie, pot.
+        Function sometimes makes a random decision so as not to be a predictable.
+        :return: bot decision how to play
+        """
+
+        from setting import BB
         p_win, p_tie = self.probability_win()
         rais = 0
 
@@ -142,6 +152,14 @@ class AI:
 
     @staticmethod
     def _round_to_multiple(number, multiple):
+        """
+        the function approximates a number to a given multiple
+        ex: (69, 25) = 75
+        ex: (59, 25) = 50
+        :param number:
+        :param multiple:
+        :return:approximate number
+        """
         total = number // multiple
         if (number - total * multiple) / multiple > 0.5:
             total += 1

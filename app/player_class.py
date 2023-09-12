@@ -1,17 +1,20 @@
 class Player(object):
-    # player_list_chair and player_list is list of all players the difference is that the order in player_list
-    # will be change after each round, order of player_list_chair are steal this same
+    """
+    Class for active player
+    """
     player_list = []
     player_list_chair = []
-    #_position = 0
+    # player_list_chair and player_list is list of all players the difference is that the order in player_list
+    # will be change after each round, order of player_list_chair are still this same
+    # _position = 0
 
     def __init__(self, name, stack, position, kind='human'):
-        #self.__class__.player_list.append(self)
-        #self.__class__.player_list_chair.append(self)
+        # self.__class__.player_list.append(self)
+        # self.__class__.player_list_chair.append(self)
         self.name = name
-        self.kind = kind  # human for user, bot, ai , gpt TERAZ TRZEBA SPRAWDZIC CZY W CALYM KODZIE GRY TE NAZWY SA TAKIE SAME
+        self.kind = kind  # human / bot / ai / gpt
         self.stack = stack
-        #self.position = Player._position
+        # self.position = Player._position
         self.position = position
         self.live = True
         self.alin = False
@@ -25,7 +28,7 @@ class Player(object):
         self.action_used = None
         self.reward = 0
 
-        #Player._position += 1
+        # Player._position += 1
 
     def allin(self):
         # player will not be asked in the auction
@@ -65,10 +68,9 @@ class Player(object):
 
     def next_auction(self):
         self.bet_auction = 0
-        self.action_history = []
 
     def next_game(self):
-        self.position = Player._position
+        # self.position = Player._position
         self.live = True
         self.alin = False
         self.cards = ''
