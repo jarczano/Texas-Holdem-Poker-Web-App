@@ -3,7 +3,7 @@
 ## Overview:
 ![Screenshot_20230916_154334_com android chrome](https://github.com/jarczano/Texas-Holdem-Poker-Web-App/assets/107764304/4c81f55d-8b20-41d0-bc6f-9cda61f64e5b)
 ![Screenshot_20230916_154453_com android chrome](https://github.com/jarczano/Texas-Holdem-Poker-Web-App/assets/107764304/8b1056f9-c429-49aa-b267-ec2337cdbe3b)
-
+[Play](https://heads-up-poker.azurewebsites.net/)
 ## Project Description
 
 ## Usage:
