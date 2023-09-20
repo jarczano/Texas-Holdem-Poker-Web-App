@@ -3,8 +3,8 @@
 ## Overview:
 The project is an online application that enables a player to engage in a two-player version of Texas Hold'em Poker, also known as heads-up poker, against various types of bots in real-time. The project comprises two primary components: a server implemented in Python using the Flask framework and Flask-SocketIO extension, and a web-based client developed with HTML, CSS, and JavaScript.
 
-![Screenshot_20230916_154334_com android chrome](https://github.com/jarczano/Texas-Holdem-Poker-Web-App/assets/107764304/4c81f55d-8b20-41d0-bc6f-9cda61f64e5b)
-![Screenshot_20230916_154453_com android chrome](https://github.com/jarczano/Texas-Holdem-Poker-Web-App/assets/107764304/8b1056f9-c429-49aa-b267-ec2337cdbe3b)
+![Screenshot_20230916_154334_com android chrome](https://github.com/jarczano/Texas-Holdem-Poker-Web-App/assets/107764304/4c81f55d-8b20-41d0-bc6f-9cda61f64e5b) ![Screenshot_20230916_154453_com android chrome](https://github.com/jarczano/Texas-Holdem-Poker-Web-App/assets/107764304/8b1056f9-c429-49aa-b267-ec2337cdbe3b)
+
 
 ## Project Description
 ### Server (Python, Flask, Flask-SocketIO):
