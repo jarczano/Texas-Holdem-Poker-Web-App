@@ -7,10 +7,8 @@ The project is an online application that enables a player to engage in a two-pl
 ![Screenshot_20230916_154453_com android chrome](https://github.com/jarczano/Texas-Holdem-Poker-Web-App/assets/107764304/8b1056f9-c429-49aa-b267-ec2337cdbe3b)
 -->
 <table>
-  <tr>
     <td><img src="https://github.com/jarczano/Texas-Holdem-Poker-Web-App/assets/107764304/4c81f55d-8b20-41d0-bc6f-9cda61f64e5b" alt="Image 1"></td>
     <td><img src="https://github.com/jarczano/Texas-Holdem-Poker-Web-App/assets/107764304/8b1056f9-c429-49aa-b267-ec2337cdbe3b" alt="Image 2"></td>
-  </tr>
 </table>
 
 ## Project Description
