@@ -48,7 +48,7 @@ https://heads-up-poker.azurewebsites.net/
 
 ## Usage:
 
-- Clone the repository: `git clone https://github.com/jarczano/Sudoku-Solver-Web-App`
+- Clone the repository: `git clone https://github.com/jarczano/Texas-Holdem-Poker-Web-App`
 - Install the requirements: `pip install -r requirements.txt`
 - Run `main.py`: `python main.py`
 
