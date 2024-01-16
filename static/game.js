@@ -17,7 +17,6 @@ const preloaderCard = document.getElementById("preloader_card");
 const cardNames = ['2C', '3C', '4C', '5C', '6C', '7C', '8C', '9C', 'TC', 'JC', 'QC', 'KC', 'AC', '2S', '3S', '4S', '5S', '6S', '7S', '8S', '9S', 'TS', 'JS', 'QS', 'KS', 'AS', '2H', '3H', '4H', '5H', '6H', '7H', '8H', '9H', 'TH', 'JH', 'QH', 'KH', 'AH', '2D', '3D', '4D', '5D', '6D', '7D', '8D', '9D', 'TD', 'JD', 'QD', 'KD', 'AD'];
 function preloadCard(){
     for (let i=0; i<cardNames.length; i++){
-        //const imagePath = '../static/image/${cardNames[i]}.png';
         const imagePath = '../static/image/' + cardNames[i] + '.png';
         preloaderCard.src = imagePath;
     }
@@ -36,14 +35,14 @@ var opponentDict = {
 const opponent_name = document.getElementById('opponent_name');
 
 opponent_name.innerText = opponentDict[lastSegment];
-//var socket = window.sharedSocket;
 
 
 var show_end_round = false;
 const time_to_show_end_round_one_win = 3500;
 const time_to_show_end_round_split = 7000;
 const time_delay_hide_action_container = 1;
-// Send start game to the serever
+
+// Send start game to the server
 socket.emit('start_game');
 
 const common_card1 = document.getElementById('common_card1');
@@ -105,7 +104,6 @@ socket.on('deal_player_cards', function(deal_player_cards){
   player_card2.style.display = 'flex';
 
 });
-
 
 // Opponent card
 socket.on('deal_opponent_cards', function(deal_opponent_cards){
@@ -302,7 +300,6 @@ function hide_action_container(){
     action_container.style.display = 'none'
   }, time_delay_hide_action_container);
 }
-
 
 // Send message to server -------------------------------------------------------------------------------------
 // send call player decision to server
