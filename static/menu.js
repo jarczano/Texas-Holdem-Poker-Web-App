@@ -11,8 +11,8 @@ function selectOpponent(opponent){
 
 
 function updateOpponentInfo() {
-    const opponentPhoto = document.getElementById("opponent-photo");
-    const opponentName = document.getElementById("opponent-name")
+
+    const opponentName = document.getElementById("opponent-name");
     const opponentDescription = document.getElementById("opponent-description");
 
     const buttons = document.querySelectorAll('.button');
@@ -21,29 +21,35 @@ function updateOpponentInfo() {
     });
 
     switch (selectedOpponent) {
-      case "bot":
-        opponentPhoto.src = "../static/image/bot_profile.jpg";
-        opponentName.textContent = "The Mathematical Mind";
-        opponentDescription.textContent = "a poker bot driven by pure math, logic, and probability. He calculates odds and strategies with mathematical precision. Challenge Bob for a battle of wits where every move is rooted in solid logic.";
-        button_bot.classList.add('selected_button')
-
-        break;
-      case "ai":
-        opponentName.textContent = "Artificial intelligence";
-        opponentPhoto.src = "../static/image/ai_profile.jpg";
-        opponentDescription.textContent = "an AI bot powered by neural networks and reinforcement learning. She evolves her game as you play, constantly adapting and improving her strategies. Can you stay ahead of an AI that learns from every hand?";
-        button_ai.classList.add('selected_button')
-        break;
-      case "gpt":
-        opponentName.textContent = "OpenAI ChatGPT";
-        opponentPhoto.src = "../static/image/gpt_profile.jpg";
-        opponentDescription.textContent = "your in-game poker companion powered by OpenAI's Chat GPT. In this unique gaming experience, you'll face off against Chat GPT, who receives prompts about the game situation and provides decisions based on a wealth of information. Can you outwit an AI that's constantly analyzing the game dynamics for the perfect move?";
-        button_gpt.classList.add('selected_button')
-        break;
-      default:
-        break;
+        case "bot":
+            opponentName.textContent = "The Mathematical Mind";
+            opponentDescription.textContent = "A poker bot driven by pure math, logic, and probability. He calculates odds and strategies with mathematical precision.";
+            document.getElementById('opponent-bot').hidden = false;
+            document.getElementById('opponent-ai').hidden = true;
+            document.getElementById('opponent-gpt').hidden = true;
+            button_bot.classList.add('selected_button');
+            break;
+        case "ai":
+            opponentName.textContent = "Artificial intelligence";
+            opponentDescription.textContent = "An AI bot powered by deep neural networks and reinforcement learning. Can you stay ahead of an AI that learns from every hand?";
+            document.getElementById('opponent-bot').hidden = true;
+            document.getElementById('opponent-ai').hidden = false;
+            document.getElementById('opponent-gpt').hidden = true;
+            button_ai.classList.add('selected_button');
+            break;
+        case "gpt":
+            opponentName.textContent = "OpenAI ChatGPT";
+            opponentDescription.textContent = "Your in-game poker companion, driven by OpenAI's ChatGPT. It analyzes game situations through prompts and provides decisions based on extensive information.";
+            document.getElementById('opponent-bot').hidden = true;
+            document.getElementById('opponent-ai').hidden = true;
+            document.getElementById('opponent-gpt').hidden = false;
+            button_gpt.classList.add('selected_button');
+            break;
+        default:
+            break;
     }
-  }
+}
+
 
 
 function play(){

@@ -1,5 +1,5 @@
 import random
-
+from app.read_probability import probability
 
 class Bot:
     def __init__(self):
@@ -88,7 +88,11 @@ class AI:
         """
 
         from setting import BB
-        p_win, p_tie = self.probability_win()
+
+        if self.common_cards is None:
+            p_win, p_tie = probability(self.own_cards)
+        else:
+            p_win, p_tie = self.probability_win()
         rais = 0
 
         if p_win > 0.5:

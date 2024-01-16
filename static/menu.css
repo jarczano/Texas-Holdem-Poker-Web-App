@@ -85,7 +85,7 @@ body {
 }
 
 
-#opponent-photo {
+#opponent-bot, #opponent-ai, #opponent-gpt {
     /*padding: 5%;*/
     margin: 1vw;
     border-radius: 10px;
@@ -101,7 +101,7 @@ body {
     /*padding:0px;*/
     margin:0px;
     margin-left: 20px;
-    font-size: 2vw;
+    font-size: 2.2vw;
     color: white;
 
 }
@@ -109,7 +109,7 @@ body {
 #opponent-description {
     margin-left: 20px;
     margin-right:20px;
-    font-size: 1vw;
+    font-size: 1.5vw;
     /*margin-top:10px;
     margin-bottom:20px;*/
     max-width:40vw;
@@ -120,7 +120,7 @@ body {
 }
 
 .choose_opponent_text{
-    font-size:2.2vw;;
+    font-size:2.6vw;;
     color: white;
     padding:10px;
     text-align:center;

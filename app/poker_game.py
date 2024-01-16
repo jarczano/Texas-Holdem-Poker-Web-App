@@ -4,7 +4,7 @@ from flask_socketio import emit
 from app.player_class import Player
 from app.poker_round import poker_round
 from app.split_pot import change_players_positions
-from setting import time_pause_round_end
+from setting import time_pause_round_end_split
 
 
 def game(opponent, player_id):
@@ -49,7 +49,7 @@ def game(opponent, player_id):
                 winner_name = player_list_chair[winner_index].name
                 end = True
 
-                emit('finish_game', winner_name + 'win the game', room=player_id)
-                time.sleep(time_pause_round_end)
+                emit('finish_game', winner_name + ' win the game', room=player_id)
+                time.sleep(time_pause_round_end_split)
                 yield 'end'
 

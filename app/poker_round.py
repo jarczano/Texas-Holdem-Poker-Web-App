@@ -6,7 +6,7 @@ from app.auction import auction
 from app.poker_score import players_score
 from app.split_pot import one_player_win, change_players_positions, split_pot
 from app.player_class import Player
-from setting import BB, SB, show_game, time_pause_round_end
+from setting import BB, SB, show_game, time_pause_round_end_split, time_pause_round_end_one_winner
 
 
 def poker_round(player_id):
@@ -108,7 +108,7 @@ def poker_round(player_id):
 
         one_player_win(player_id)
         # end of round
-        time.sleep(time_pause_round_end)
+        time.sleep(time_pause_round_end_one_winner)
         # hide opponent decision
         emit('hide_opponent_decision', room=player_id)
     else:
@@ -146,7 +146,7 @@ def poker_round(player_id):
             one_player_win(player_id)
 
             # end of round
-            time.sleep(time_pause_round_end)
+            time.sleep(time_pause_round_end_one_winner)
             # hide opponent decision
             emit('hide_opponent_decision', room=player_id)
             # Return to the original position
@@ -182,7 +182,7 @@ def poker_round(player_id):
                 one_player_win(player_id)
                 
                 # end of round
-                time.sleep(time_pause_round_end)
+                time.sleep(time_pause_round_end_one_winner)
                 # hide opponent decision
                 emit('hide_opponent_decision', room=player_id)
                 change_players_positions(shift_decision)
@@ -218,7 +218,7 @@ def poker_round(player_id):
                     one_player_win(player_id)
 
                     # end of round
-                    time.sleep(time_pause_round_end)
+                    time.sleep(time_pause_round_end_one_winner)
                      # hide opponent decision
                     emit('hide_opponent_decision', room=player_id)
                     change_players_positions(shift_decision)
@@ -236,7 +236,7 @@ def poker_round(player_id):
                     split_pot(player_id)
 
                     # end of round
-                    time.sleep(time_pause_round_end)
+                    time.sleep(time_pause_round_end_split)
 
                     # Return players to the original position
                     change_players_positions(shift_decision)

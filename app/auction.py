@@ -116,7 +116,7 @@ def auction(player_id, common_cards=None):
                     observation.extend(stage_round)
 
                     print('observation vector: ', observation)
-                    model = load_model('models/model_20002epoch-1688915279.303047.h5')
+                    model = load_model('models/model_39900epoch-1705423325.8953226.h5')
 
                     # numpy
                     # best_action_index = np.argmax(model.predict(np.array(observation).reshape(1, 7)))
